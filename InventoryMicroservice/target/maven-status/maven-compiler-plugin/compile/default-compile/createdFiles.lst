@@ -1,0 +1,11 @@
+com\example\inventory\rabbitmq\StockCheckConsumer$1.class
+com\example\inventory\rest\ApplicationConfig.class
+com\example\inventory\ejb\InventoryBeanLocal.class
+com\example\inventory\rabbitmq\RabbitMQConfig.class
+com\example\inventory\rabbitmq\InventoryMessageProcessor.class
+com\example\inventory\rabbitmq\InventoryMessageProcessorImpl.class
+com\example\inventory\rabbitmq\StockCheckConsumer.class
+com\example\inventory\rest\CorsFilter.class
+com\example\inventory\ejb\InventoryBean.class
+com\example\inventory\model\Dish.class
+com\example\inventory\rest\InventoryResource.class

@@ -1,0 +1,10 @@
+C:\Users\ASUS\Downloads\InventoryMicroservice\src\main\java\com\example\inventory\rabbitmq\RabbitMQConfig.java
+C:\Users\ASUS\Downloads\InventoryMicroservice\src\main\java\com\example\inventory\rabbitmq\InventoryMessageProcessorImpl.java
+C:\Users\ASUS\Downloads\InventoryMicroservice\src\main\java\com\example\inventory\rest\CorsFilter.java
+C:\Users\ASUS\Downloads\InventoryMicroservice\src\main\java\com\example\inventory\ejb\InventoryBean.java
+C:\Users\ASUS\Downloads\InventoryMicroservice\src\main\java\com\example\inventory\ejb\InventoryBeanLocal.java
+C:\Users\ASUS\Downloads\InventoryMicroservice\src\main\java\com\example\inventory\rest\ApplicationConfig.java
+C:\Users\ASUS\Downloads\InventoryMicroservice\src\main\java\com\example\inventory\model\Dish.java
+C:\Users\ASUS\Downloads\InventoryMicroservice\src\main\java\com\example\inventory\rabbitmq\InventoryMessageProcessor.java
+C:\Users\ASUS\Downloads\InventoryMicroservice\src\main\java\com\example\inventory\rest\InventoryResource.java
+C:\Users\ASUS\Downloads\InventoryMicroservice\src\main\java\com\example\inventory\rabbitmq\StockCheckConsumer.java
