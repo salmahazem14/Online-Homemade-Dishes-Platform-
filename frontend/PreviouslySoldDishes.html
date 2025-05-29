@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YumYum | Sales History</title>
+    <style>
+        :root {
+            --primary-purple: #8a4fff;
+            --light-purple: #e2d4ff;
+            --lighter-purple: #f5f0ff;
+            --white: #ffffff;
+            --soft-shadow: 0 4px 12px rgba(138, 79, 255, 0.1);
+            --card-radius: 15px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #faf5ff;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M30,30 Q50,10 70,30 T90,50 Q70,70 50,90 T10,50 Q30,30 50,10 Z" fill="none" stroke="%238a4fff" stroke-width="0.5" opacity="0.1"/></svg>');
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-purple);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .logo h1 {
+            color: var(--primary-purple);
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: var(--light-purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-purple);
+            font-weight: bold;
+        }
+        
+        .page-title {
+            color: var(--primary-purple);
+            margin-bottom: 25px;
+            font-size: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .back-btn {
+            padding: 8px 15px;
+            background-color: var(--white);
+            color: var(--primary-purple);
+            border: 2px solid var(--light-purple);
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .back-btn:hover {
+            background-color: var(--lighter-purple);
+        }
+        
+        .filter-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-select {
+            padding: 10px 15px;
+            border: 2px solid var(--light-purple);
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: var(--white);
+            color: #555;
+            cursor: pointer;
+            min-width: 200px;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+        }
+        
+        .sales-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: var(--white);
+            border-radius: var(--card-radius);
+            box-shadow: var(--soft-shadow);
+            overflow: hidden;
+        }
+        
+        .sales-table thead th {
+            background-color: var(--lighter-purple);
+            color: var(--primary-purple);
+            padding: 15px 20px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid var(--light-purple);
+        }
+        
+        .sales-table tbody tr {
+            transition: background-color 0.2s;
+        }
+        
+        .sales-table tbody tr:hover {
+            background-color: var(--lighter-purple);
+        }
+        
+        .sales-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--light-purple);
+            color: #555;
+            vertical-align: top;
+        }
+        
+        .dish-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .dish-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--lighter-purple);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-purple);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        
+        .dish-name {
+            font-weight: 600;
+            color: var(--primary-purple);
+            margin-bottom: 3px;
+        }
+        
+        .dish-price {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .customer-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .customer-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--light-purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-purple);
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        
+        .customer-name {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        
+        .customer-contact {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .shipping-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .shipping-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #e3f2fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1976d2;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        
+        .shipping-company {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        
+        .shipping-status {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .status-delivered {
+            color: #28a745;
+        }
+        
+        .status-pending {
+            color: #ffc107;
+        }
+        
+        .status-cancelled {
+            color: #dc3545;
+        }
+        
+        .sale-date {
+            font-weight: 500;
+        }
+        
+        .sale-time {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .sale-amount {
+            font-weight: 600;
+            color: var(--primary-purple);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 10px;
+        }
+        
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background-color: var(--white);
+            color: var(--primary-purple);
+            border: 1px solid var(--light-purple);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .page-btn.active {
+            background-color: var(--primary-purple);
+            color: white;
+            border-color: var(--primary-purple);
+        }
+        
+        .page-btn:hover:not(.active) {
+            background-color: var(--lighter-purple);
+        }
+        
+        @media (max-width: 768px) {
+            .sales-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .filter-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .filter-select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1></h1>
+        </div>
+        
+        <div class="user-info">
+            <div class="user-avatar">C</div>
+            <span>Chef Maria</span>
+        </div>
+    </header>
+    
+    <main>
+        <h2 class="page-title">
+            Sales History
+            <a href="DishSellerDashboard.html" class="back-btn">
+    ← Back to Dashboard
+</a>
+        </h2>
+        
+        
+        <table class="sales-table">
+            <thead>
+                <tr>
+                    <th>Dish</th>
+                    <th>Customer</th>
+                    <th>Shipping</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="dish-info">
+                            <div class="dish-icon">🍕</div>
+                            <div>
+                                <div class="dish-name">Margherita Pizza</div>
+                                <div class="dish-price">$14.99 × 1</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="customer-info">
+                            <div class="customer-avatar">S</div>
+                            <div>
+                                <div class="customer-name">Sarah Johnson</div>
+                                <div class="customer-contact">sarah.j@example.com</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="shipping-info">
+                            <div class="shipping-icon">🚚</div>
+                            <div>
+                                <div class="shipping-company">FastDeliver</div>
+                                <div class="shipping-status status-delivered">Delivered</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="sale-date">Jun 15, 2023</div>
+                        <div class="sale-time">2:45 PM</div>
+                    </td>
+                    <td class="sale-amount">$16.48</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="dish-info">
+                            <div class="dish-icon">🍝</div>
+                            <div>
+                                <div class="dish-name">Grandma's Lasagna</div>
+                                <div class="dish-price">$12.50 × 2</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="customer-info">
+                            <div class="customer-avatar">M</div>
+                            <div>
+                                <div class="customer-name">Michael Chen</div>
+                                <div class="customer-contact">michael.c@example.com</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="shipping-info">
+                            <div class="shipping-icon">📦</div>
+                            <div>
+                                <div class="shipping-company">QuickShip</div>
+                                <div class="shipping-status status-delivered">Delivered</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="sale-date">Jun 14, 2023</div>
+                        <div class="sale-time">6:30 PM</div>
+                    </td>
+                    <td class="sale-amount">$27.50</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="dish-info">
+                            <div class="dish-icon">🍰</div>
+                            <div>
+                                <div class="dish-name">Chocolate Lava Cake</div>
+                                <div class="dish-price">$8.99 × 1</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="customer-info">
+                            <div class="customer-avatar">E</div>
+                            <div>
+                                <div class="customer-name">Emma Rodriguez</div>
+                                <div class="customer-contact">emma.r@example.com</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="shipping-info">
+                            <div class="shipping-icon">🚗</div>
+                            <div>
+                                <div class="shipping-company">LocalCourier</div>
+                                <div class="shipping-status status-delivered">Delivered</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="sale-date">Jun 13, 2023</div>
+                        <div class="sale-time">11:15 AM</div>
+                    </td>
+                    <td class="sale-amount">$9.89</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="dish-info">
+                            <div class="dish-icon">🥗</div>
+                            <div>
+                                <div class="dish-name">Mediterranean Salad</div>
+                                <div class="dish-price">$10.25 × 1</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="customer-info">
+                            <div class="customer-avatar">D</div>
+                            <div>
+                                <div class="customer-name">David Kim</div>
+                                <div class="customer-contact">david.k@example.com</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="shipping-info">
+                            <div class="shipping-icon">🚚</div>
+                            <div>
+                                <div class="shipping-company">FastDeliver</div>
+                                <div class="shipping-status status-pending">In Transit</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="sale-date">Jun 12, 2023</div>
+                        <div class="sale-time">5:20 PM</div>
+                    </td>
+                    <td class="sale-amount">$11.28</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="dish-info">
+                            <div class="dish-icon">🍛</div>
+                            <div>
+                                <div class="dish-name">Chicken Tikka Masala</div>
+                                <div class="dish-price">$13.75 × 3</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="customer-info">
+                            <div class="customer-avatar">J</div>
+                            <div>
+                                <div class="customer-name">Jessica Williams</div>
+                                <div class="customer-contact">jessica.w@example.com</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="shipping-info">
+                            <div class="shipping-icon">📦</div>
+                            <div>
+                                <div class="shipping-company">QuickShip</div>
+                                <div class="shipping-status status-cancelled">Cancelled</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="sale-date">Jun 10, 2023</div>
+                        <div class="sale-time">7:45 PM</div>
+                    </td>
+                    <td class="sale-amount">$45.38</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="pagination">
+            <button class="page-btn">❮</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">❯</button>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YumYum | Add New Dish</title>
+  <style>
+    :root {
+      --primary-purple: #8a4fff;
+      --light-purple:  #e2d4ff;
+      --lighter-purple:#f5f0ff;
+      --white:         #ffffff;
+      --soft-shadow:   0 4px 12px rgba(138,79,255,0.1);
+      --card-radius:   15px;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
+    body {
+      background-color:#faf5ff;
+      min-height:100vh;
+      padding:20px;
+      background-image:url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M30,30 Q50,10 70,30 T90,50 Q70,70 50,90 T10,50 Q30,30 50,10 Z" fill="none" stroke="%238a4fff" stroke-width="0.5" opacity="0.1"/></svg>');
+    }
+    header {
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:30px; padding-bottom:15px; border-bottom:1px solid var(--light-purple);
+    }
+    .logo { display:flex; align-items:center; gap:10px; }
+    .logo svg { width:40px; height:40px; }
+    .logo h1 { color:var(--primary-purple); font-size:20px; font-weight:700; }
+    .user-info { display:flex; align-items:center; gap:10px; }
+    .user-avatar {
+      width:35px; height:35px; border-radius:50%; background-color:var(--light-purple);
+      display:flex; align-items:center; justify-content:center; color:var(--primary-purple); font-weight:bold;
+    }
+    .page-title {
+      color:var(--primary-purple); font-size:24px; margin-bottom:25px;
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    .back-btn {
+      text-decoration:none; display:flex; align-items:center; gap:5px;
+      padding:8px 15px; background-color:var(--white); color:var(--primary-purple);
+      border:2px solid var(--light-purple); border-radius:8px;
+      font-size:14px; font-weight:500; transition:all .3s;
+    }
+    .back-btn:hover { background-color:var(--lighter-purple); }
+    .form-container {
+      background-color:var(--white); border-radius:var(--card-radius);
+      box-shadow:var(--soft-shadow); padding:30px; max-width:800px; margin:0 auto;
+    }
+    .form-group { margin-bottom:25px; }
+    .form-group label {
+      display:block; margin-bottom:8px; color:var(--primary-purple); font-weight:500;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width:100%; padding:12px 15px; border:2px solid var(--light-purple);
+      border-radius:8px; font-size:16px; transition:all .3s; background-color:#fbf9ff;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline:none; border-color:var(--primary-purple);
+      box-shadow:0 0 0 3px rgba(138,79,255,0.2);
+    }
+    .form-group textarea { min-height:100px; resize:vertical; }
+    .form-row { display:flex; gap:20px; }
+    .form-col { flex:1; }
+    .image-upload {
+      border:2px dashed var(--light-purple); border-radius:var(--card-radius);
+      padding:30px; text-align:center; cursor:pointer; transition:all .3s;
+      margin-bottom:25px;
+    }
+    .image-upload:hover {
+      border-color:var(--primary-purple); background-color:var(--lighter-purple);
+    }
+    .upload-icon { font-size:48px; color:var(--primary-purple); margin-bottom:15px; }
+    .upload-text { color:var(--primary-purple); font-weight:500; }
+    .action-buttons { display:flex; justify-content:flex-end; gap:15px; margin-top:30px; }
+    .save-btn {
+      padding:12px 30px; background-color:var(--primary-purple); color:white;
+      border:none; border-radius:8px; font-size:16px; font-weight:500; cursor:pointer;
+      transition:all .3s;
+    }
+    .save-btn:hover {
+      background-color:#7a3fe6; box-shadow:0 4px 12px rgba(138,79,255,0.3);
+    }
+    .cancel-btn {
+      padding:12px 30px; background-color:var(--white); color:#555;
+      border:2px solid #ddd; border-radius:8px; font-size:16px; font-weight:500;
+      cursor:pointer; transition:all .3s;
+    }
+    .cancel-btn:hover { background-color:#f5f5f5; }
+    @media(max-width:768px) {
+      .form-row { flex-direction:column; gap:0; }
+      .form-container { padding:20px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12…"/></svg>
+      <h1>YumYum Seller</h1>
+    </div>
+    <div class="user-info">
+      <div class="user-avatar">C</div><span>Chef Maria</span>
+    </div>
+  </header>
+
+  <main>
+    <h2 class="page-title">
+      Add New Dish
+      <a href="DishSellerDashboard.html" class="back-btn">← Back to Dashboard</a>
+    </h2>
+
+    <div class="form-container">
+
+      <div class="image-upload">
+        <div class="upload-icon">📷</div>
+        <div class="upload-text">Click to upload dish image</div>
+        <input type="file" id="dishImage" accept="image/*" style="display:none"/>
+      </div>
+
+      <div class="form-group">
+        <label for="dishName">Dish Name</label>
+        <input type="text" id="dishName" placeholder="Enter dish name"/>
+      </div>
+
+      <div class="form-group">
+        <label for="dishDescription">Description</label>
+        <textarea id="dishDescription" placeholder="Describe your dish…"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-col">
+          <div class="form-group">
+            <label for="dishPrice">Price ($)</label>
+            <input type="number" id="dishPrice" placeholder="0.00" min="0" step="0.01"/>
+          </div>
+        </div>
+        <div class="form-col">
+          <div class="form-group">
+            <label for="dishQuantity">Available Quantity</label>
+            <input type="number" id="dishQuantity" placeholder="0" min="0"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-col">
+          <div class="form-group">
+            <label for="dishCategory">Category</label>
+            <select id="dishCategory">
+              <option value="">Select category</option>
+              <option value="appetizers">Appetizers</option>
+              <option value="main-courses">Main Courses</option>
+              <option value="desserts">Desserts</option>
+              <option value="salads">Salads</option>
+              <option value="beverages">Beverages</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-col">
+          <div class="form-group">
+            <label for="prepTime">Prep Time (min)</label>
+            <input type="number" id="prepTime" placeholder="e.g. 30" min="0"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="lowThreshold">Low Stock Threshold</label>
+        <input type="number" id="lowThreshold" placeholder="5" min="0" value="5"/>
+      </div>
+
+      <!-- hidden companyId: replace 123 with your actual context value -->
+      <input type="hidden" id="companyId" value="123"/>
+
+      <div class="form-group">
+        <label for="specialNotes">Special Notes</label>
+        <textarea id="specialNotes" placeholder="Allergies, dietary restrictions…"></textarea>
+      </div>
+
+      <div class="action-buttons">
+        <button class="cancel-btn">Cancel</button>
+        <button class="save-btn">Save Dish</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Shortcut to get element value
+    const val = id => document.getElementById(id).value;
+
+    // Image upload preview
+    const imgUp = document.querySelector('.image-upload');
+    const inp   = document.getElementById('dishImage');
+    const txt   = document.querySelector('.upload-text');
+    imgUp.addEventListener('click', ()=> inp.click());
+    inp.addEventListener('change', e => {
+      if(e.target.files.length) txt.textContent = e.target.files[0].name;
+    });
+
+    // Save Dish
+    document.querySelector('.save-btn').addEventListener('click', async e => {
+      e.preventDefault();
+      try {
+  const user = JSON.parse(localStorage.getItem('user'));
+  const companyId = user.id; 
+   console.log("ID from localStorage:", companyId)
+
+  if (!companyId) {
+    throw new Error('User ID not found in local storage.');
+  }
+
+  const payload = {
+    name: val('dishName').trim(),
+    description: val('dishDescription').trim(),
+    price: parseFloat(val('dishPrice')) || 0,
+    stockQuantity: parseInt(val('dishQuantity'), 10) || 0,
+    lowStockThreshold: parseInt(val('lowThreshold'), 10) || 5
+  };
+
+  const createDishRes = await fetch(
+    `http://localhost:8080/inventory-service/api/inventory/AddDish/${companyId}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }
+  );
+
+  if (createDishRes.status === 201) {
+    const d = await createDishRes.json();
+    alert(`Dish “${d.name}” created (ID=${d.id})`);
+    location.href = 'DishSellerDashboard.html';
+  } else {
+    const text = await createDishRes.text();
+    throw new Error(`${createDishRes.status}: ${text}`);
+  }
+} catch (err) {
+  console.error(err);
+  alert('Error saving dish: ' + err.message);
+}
+
+    });
+
+    // Cancel
+    document.querySelector('.cancel-btn').addEventListener('click', e=> {
+      e.preventDefault();
+      if (confirm('Cancel and lose changes?')) {
+        location.href = 'DishSellerDashboard.html';
+      }
+    });
+  </script>
+</body>
+</html>

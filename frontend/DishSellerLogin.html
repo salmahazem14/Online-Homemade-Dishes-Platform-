@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YumYum Admin | Login</title>
+    <style>
+        :root {
+            --primary-purple: #8a4fff;
+            --light-purple: #e2d4ff;
+            --white: #ffffff;
+            --soft-shadow: 0 4px 12px rgba(138, 79, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #faf5ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M30,30 Q50,10 70,30 T90,50 Q70,70 50,90 T10,50 Q30,30 50,10 Z" fill="none" stroke="%238a4fff" stroke-width="0.5" opacity="0.2"/></svg>');
+        }
+        
+        .login-container {
+            background-color: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--soft-shadow);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, #ff9a9e 0%, #fad0c4 50%, #a18cd1 100%);
+        }
+        
+        .logo {
+            margin-bottom: 30px;
+        }
+        
+        .logo img {
+            width: 80px;
+            height: 80px;
+        }
+        
+        .logo h1 {
+            color: var(--primary-purple);
+            font-size: 24px;
+            margin-top: 10px;
+            font-weight: 700;
+        }
+        
+        .logo p {
+            color: #888;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+            position: relative;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-purple);
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--light-purple);
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s;
+            background-color: #fbf9ff;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 3px rgba(138, 79, 255, 0.2);
+        }
+        
+        .input-group .icon {
+            position: absolute;
+            right: 15px;
+            top: 38px;
+            color: var(--primary-purple);
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember-me input {
+            margin-right: 5px;
+            accent-color: var(--primary-purple);
+        }
+        
+        .forgot-password a {
+            color: var(--primary-purple);
+            text-decoration: none;
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-purple);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        .login-button:hover {
+            background-color: #7a3fe6;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(138, 79, 255, 0.2);
+        }
+        
+        .error-message {
+            color: #dc3545;
+            margin-bottom: 15px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .decoration {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: var(--light-purple);
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+        
+        .decoration-1 {
+            top: -15px;
+            left: -15px;
+        }
+        
+        .decoration-2 {
+            bottom: -15px;
+            right: -15px;
+        }
+        
+        .cute-element {
+            position: absolute;
+            font-size: 24px;
+        }
+        
+        .cute-element-1 {
+            top: 20px;
+            right: 20px;
+        }
+        
+        .cute-element-2 {
+            bottom: 20px;
+            left: 20px;
+            transform: rotate(180deg);
+        }
+        
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+                margin: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="decoration decoration-1"></div>
+        <div class="decoration decoration-2"></div>
+        <div class="cute-element cute-element-1">🍓</div>
+        <div class="cute-element cute-element-2">🍰</div>
+        
+        <div class="logo">
+            <h1>Dish Seller Login</h1>
+            <p>Manage homemade deliciousness</p>
+        </div>
+        
+        <form id="loginForm">
+            <div class="error-message" id="errorMessage"></div>
+            
+            <div class="input-group">
+                <label for="companyName">Company Name</label>
+                <input type="text" id="companyName" placeholder="Enter your company name" required>
+                <span class="icon">👩‍🍳</span>
+            </div>
+            
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+                <span class="icon">🔒</span>
+            </div>
+            
+            <button type="submit" class="login-button" id="loginButton">Log In</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const companyName = document.getElementById('companyName').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            const loginButton = document.getElementById('loginButton');
+            
+            // Reset error message
+            errorMessage.style.display = 'none';
+            errorMessage.textContent = '';
+            
+            // Validate inputs
+            if (!companyName || !password) {
+                showError('Please enter both company name and password');
+                return;
+            }
+            
+            try {
+                // Show loading state
+                loginButton.disabled = true;
+                loginButton.textContent = 'Logging in...';
+                
+                // Make API call to login
+                const response = await fetch('http://localhost:8083/api/dish-sellers/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        companyName: companyName,
+                        password: password
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Login failed');
+                }
+                
+                const data = await response.json();
+                
+                // Successful login - redirect to dashboard or store token
+                console.log('Login successful:', data);
+                localStorage.setItem('user', JSON.stringify(data));
+                window.location.href = 'DishSellerDashboard.html'; // Change to your dashboard page
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                showError(error.message || 'Invalid company name or password');
+            } finally {
+                // Reset button state
+                loginButton.disabled = false;
+                loginButton.textContent = 'Log In';
+            }
+        });
+        
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

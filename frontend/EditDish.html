@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YumYum | Edit Dish</title>
+  <style>
+    :root {
+      --primary-purple: #8a4fff;
+      --light-purple: #e2d4ff;
+      --lighter-purple: #f5f0ff;
+      --white: #ffffff;
+      --soft-shadow: 0 4px 12px rgba(138, 79, 255, 0.1);
+      --card-radius: 15px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #faf5ff;
+      min-height: 100vh;
+      padding: 20px;
+      background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M30,30 Q50,10 70,30 T90,50 Q70,70 50,90 T10,50 Q30,30 50,10 Z" fill="none" stroke="%238a4fff" stroke-width="0.5" opacity="0.1"/></svg>');
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--light-purple);
+    }
+
+    .logo h1 {
+      color: var(--primary-purple);
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-avatar {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background-color: var(--light-purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-purple);
+      font-weight: bold;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary-purple);
+      text-decoration: none;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .back-btn:hover {
+      text-decoration: underline;
+    }
+
+    .edit-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--white);
+      border-radius: var(--card-radius);
+      box-shadow: var(--soft-shadow);
+      padding: 30px;
+    }
+
+    .edit-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--light-purple);
+    }
+
+    .edit-title {
+      color: var(--primary-purple);
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--primary-purple);
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid var(--light-purple);
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s;
+      background-color: var(--lighter-purple);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-purple);
+      box-shadow: 0 0 0 3px rgba(138, 79, 255, 0.2);
+    }
+
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .price-input {
+      position: relative;
+    }
+
+    .price-input:before {
+      content: '$';
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary-purple);
+      font-weight: 500;
+    }
+
+    .price-input .form-control {
+      padding-left: 30px;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .cancel-btn {
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      background-color: var(--white);
+      color: var(--primary-purple);
+      border: 2px solid var(--light-purple);
+    }
+
+    .cancel-btn:hover {
+      background-color: var(--lighter-purple);
+    }
+
+    .save-btn {
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      background-color: var(--primary-purple);
+      color: white;
+      border: none;
+    }
+
+    .save-btn:hover {
+      background-color: #7a3fe6;
+      box-shadow: 0 4px 12px rgba(138, 79, 255, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .edit-container {
+        padding: 20px;
+      }
+
+      .form-actions {
+        flex-direction: column;
+      }
+
+      .cancel-btn,
+      .save-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <h1>Dish Seller</h1>
+    </div>
+    <div class="user-info">
+      <div class="user-avatar">C</div>
+      <span>Chef Maria</span>
+    </div>
+  </header>
+
+  <a href="DishSellerDashboard.html" class="back-btn">← Back to Dashboard</a>
+
+  <div class="edit-container">
+    <div class="edit-header">
+      <h2 class="edit-title">Edit Dish</h2>
+    </div>
+
+    <div class="form-group">
+      <label for="dishName" class="form-label">Dish Name</label>
+      <input type="text" id="dishName" class="form-control">
+    </div>
+
+    <div class="form-group price-input">
+      <label for="dishPrice" class="form-label">Price</label>
+      <input type="number" id="dishPrice" class="form-control" step="0.01" min="0">
+    </div>
+
+    <div class="form-group">
+      <label for="dishDescription" class="form-label">Description</label>
+      <textarea id="dishDescription" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="dishStock" class="form-label">Stock Quantity</label>
+        <input type="number" id="dishStock" class="form-control" min="0" />
+      </div>
+      
+    <div class="form-actions">
+      <button class="cancel-btn" onclick="location.href='DishSellerDashboard.html'">Cancel</button>
+      <button class="save-btn" id="saveBtn">Save Changes</button>
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const dishId = urlParams.get('id');
+
+    if (!dishId) {
+      alert('No dish ID provided. Redirecting to dashboard.');
+      window.location.href = 'DishSellerDashboard.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchDishDetails);
+
+    async function fetchDishDetails() {
+      try {
+        const response = await fetch(`http://localhost:8080/inventory-service/api/inventory/dishes/${dishId}`);
+        if (!response.ok) throw new Error('Failed to fetch dish details');
+        const dish = await response.json();
+        populateForm(dish);
+      } catch (error) {
+        console.error('Error fetching dish details:', error);
+        alert('Error loading dish details. Please try again.');
+        window.location.href = 'DishSellerDashboard.html';
+      }
+    }
+
+    function populateForm(dish) {
+      document.getElementById('dishName').value = dish.name || '';
+      document.getElementById('dishPrice').value = dish.price || '';
+      document.getElementById('dishDescription').value = dish.description || '';
+      document.getElementById('dishStock').value = dish.stockQuantity || 0;
+    }
+
+    document.getElementById('saveBtn').addEventListener('click', async function () {
+        const dishData = {
+    name: document.getElementById('dishName').value,
+    price: parseFloat(document.getElementById('dishPrice').value),
+    description: document.getElementById('dishDescription').value,
+    stockQuantity: parseInt(document.getElementById('dishStock').value)
+};
+
+
+      try {
+        const response = await fetch(`http://localhost:8080/inventory-service/api/inventory/dishes/${dishId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(dishData)
+        });
+
+        if (!response.ok) throw new Error('Failed to update dish');
+
+        alert('Changes saved successfully!');
+        window.location.href = 'DishSellerDashboard.html';
+      } catch (error) {
+        console.error('Error saving dish:', error);
+        alert('Failed to save changes. Please try again.');
+      }
+    });
+  </script>
+</body>
+</html>

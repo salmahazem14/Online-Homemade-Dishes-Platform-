@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YumYum Admin | Dashboard</title>
+    <style>
+        :root {
+            --primary-purple: #8a4fff;
+            --light-purple: #e2d4ff;
+            --lighter-purple: #f5f0ff;
+            --white: #ffffff;
+            --soft-shadow: 0 4px 12px rgba(138, 79, 255, 0.1);
+            --card-radius: 15px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #faf5ff;
+            min-height: 100vh;
+            padding: 30px;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M30,30 Q50,10 70,30 T90,50 Q70,70 50,90 T10,50 Q30,30 50,10 Z" fill="none" stroke="%238a4fff" stroke-width="0.5" opacity="0.1"/></svg>');
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--light-purple);
+            flex-shrink: 0;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .logo h1 {
+            color: var(--primary-purple);
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light-purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-purple);
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .dashboard-title {
+            color: var(--primary-purple);
+            font-size: 28px;
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            padding: 30px 0;
+            width: 100%;
+        }
+        
+        .widgets-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .widget {
+            background-color: var(--white);
+            border-radius: var(--card-radius);
+            box-shadow: var(--soft-shadow);
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 5px solid var(--primary-purple);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .widget:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(138, 79, 255, 0.15);
+        }
+        
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .widget-title {
+            color: var(--primary-purple);
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .widget-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--lighter-purple);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-purple);
+            font-size: 22px;
+        }
+        
+        .widget-content {
+            margin-bottom: 25px;
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        
+        .widget-button {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: var(--primary-purple);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            align-self: flex-start;
+        }
+        
+        .widget-button:hover {
+            background-color: #7a3fe6;
+            box-shadow: 0 4px 12px rgba(138, 79, 255, 0.3);
+        }
+        
+        .widget::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background-color: var(--lighter-purple);
+            border-radius: 50%;
+            z-index: 0;
+            opacity: 0.5;
+            transform: translate(30%, 30%);
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            
+            .widgets-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .widget {
+                padding: 25px;
+            }
+            
+            .dashboard-title {
+                font-size: 24px;
+                margin: 30px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Admin Home</h1>
+        </div>
+        
+        <div class="user-info">
+            <div class="user-avatar">A</div>
+            <span>Admin</span>
+        </div>
+    </header>
+    
+    <div class="main-content">
+        <h2 class="dashboard-title">Dashboard Overview</h2>
+        
+        <div class="widgets-container">
+            <!-- Create Dish Seller Accounts Widget -->
+            <div class="widget">
+                <div class="widget-header">
+                    <h3 class="widget-title">Dish Seller Accounts</h3>
+                    <div class="widget-icon">👩‍🍳</div>
+                </div>
+                <div class="widget-content">
+                    <p>Create and manage accounts for home chefs who sell their delicious homemade dishes through your platform.</p>
+                </div>
+                <a href="DishSellerListing.html" class="widget-button">View Sellers</a>
+            </div>
+            
+            <!-- Customer Accounts Widget -->
+            <div class="widget">
+                <div class="widget-header">
+                    <h3 class="widget-title">Customer Accounts</h3>
+                    <div class="widget-icon">👨‍👩‍👧‍👦</div>
+                </div>
+                <div class="widget-content">
+                    <p>View and manage all customer accounts, including order history and preferences.</p>
+                </div>
+                <a href="CustomerListing.html" class="widget-button">View Customers</a>
+            </div>
+            
+            <!-- Dish Preparation Companies Widget -->
+            <div class="widget">
+                <div class="widget-header">
+                    <h3 class="widget-title">Dish Preparation Companies</h3>
+                    <div class="widget-icon">🏭</div>
+                </div>
+                <div class="widget-content">
+                    <p>Manage commercial kitchens and food preparation partners that support your home chefs.</p>
+                </div>
+                <a href="DishSellerAccount.html" class="widget-button">Manage Companies</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

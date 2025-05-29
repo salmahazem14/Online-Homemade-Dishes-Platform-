@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YumYum | Welcome</title>
+    <style>
+        :root {
+            --primary-purple: #8a4fff;
+            --light-purple: #e2d4ff;
+            --lighter-purple: #f5f0ff;
+            --white: #ffffff;
+            --soft-shadow: 0 4px 12px rgba(138, 79, 255, 0.1);
+            --card-radius: 15px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #faf5ff;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M30,30 Q50,10 70,30 T90,50 Q70,70 50,90 T10,50 Q30,30 50,10 Z" fill="none" stroke="%238a4fff" stroke-width="0.5" opacity="0.1"/></svg>');
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: center;
+            padding: 30px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-purple);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .logo-text {
+            color: var(--primary-purple);
+            font-size: 32px;
+            font-weight: 700;
+        }
+        
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .welcome-title {
+            color: var(--primary-purple);
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-subtitle {
+            color: #666;
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            padding: 20px 0;
+        }
+        
+        .role-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .role-card {
+            background-color: var(--white);
+            border-radius: var(--card-radius);
+            box-shadow: var(--soft-shadow);
+            padding: 40px 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-top: 5px solid var(--primary-purple);
+        }
+        
+        .role-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(138, 79, 255, 0.15);
+        }
+        
+        .role-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--lighter-purple);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-purple);
+            font-size: 36px;
+            margin: 0 auto 25px;
+        }
+        
+        .role-title {
+            color: var(--primary-purple);
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .role-description {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        
+        .role-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary-purple);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .role-btn:hover {
+            background-color: #7a3fe6;
+            box-shadow: 0 6px 15px rgba(138, 79, 255, 0.3);
+        }
+        
+        .role-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background-color: var(--lighter-purple);
+            border-radius: 50%;
+            z-index: 0;
+            opacity: 0.5;
+            transform: translate(30%, 30%);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #888;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .role-cards {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .welcome-title {
+                font-size: 28px;
+            }
+            
+            .welcome-subtitle {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">🍽️</div>
+          
+        </div>
+    </div>
+    
+    <div class="welcome-message">
+        <h1 class="welcome-title">Welcome</h1>
+        <p class="welcome-subtitle">Discover homemade deliciousness from local chefs or share your culinary creations with the community</p>
+    </div>
+    
+    <div class="main-content">
+        <div class="role-cards">
+            <!-- Admin Card -->
+            <div class="role-card">
+                <div class="role-icon">👨‍💼</div>
+                <h3 class="role-title">Administrator</h3>
+                <p class="role-description">Manage the platform, oversee sellers and customers, and ensure smooth operations of our homemade dishes community.</p>
+                <a href="AdminLogin.html" class="role-btn">Admin Login</a>
+            </div>
+            
+            <!-- Dish Seller Card -->
+            <div class="role-card">
+                <div class="role-icon">👩‍🍳</div>
+                <h3 class="role-title">Dish Seller</h3>
+                <p class="role-description">Share your homemade dishes with the community, manage your menu, and connect with food lovers.</p>
+                <a href="DishSellerLogin.html" class="role-btn">Seller Login</a>
+            </div>
+            
+            <!-- Customer Card -->
+            <div class="role-card">
+                <div class="role-icon">🍴</div>
+                <h3 class="role-title">Customer</h3>
+                <p class="role-description">Discover and order delicious homemade meals from talented local chefs in your area.</p>
+                <a href="CustomerLogin.html" class="role-btn">Browse Dishes</a>
+            </div>
+        </div>
+    </div>
+    
+    
+</body>
+</html>

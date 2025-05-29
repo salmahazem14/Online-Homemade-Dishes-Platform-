@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <style>
+        :root {
+            --primary-purple: #8a4fff;
+            --light-purple: #e2d4ff;
+            --lighter-purple: #f5f0ff;
+            --white: #ffffff;
+            --soft-shadow: 0 4px 12px rgba(138, 79, 255, 0.1);
+            --card-radius: 15px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #faf5ff;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M30,30 Q50,10 70,30 T90,50 Q70,70 50,90 T10,50 Q30,30 50,10 Z" fill="none" stroke="%238a4fff" stroke-width="0.5" opacity="0.1"/></svg>');
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-purple);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .logo h1 {
+            color: var(--primary-purple);
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: var(--light-purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-purple);
+            font-weight: bold;
+        }
+        
+        .dashboard-title {
+            color: var(--primary-purple);
+            margin-bottom: 25px;
+            font-size: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .action-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .new-order-btn {
+            background-color: var(--primary-purple);
+            color: white;
+            border: none;
+        }
+        
+        .new-order-btn:hover {
+            background-color: #7a3fe6;
+            box-shadow: 0 4px 12px rgba(138, 79, 255, 0.3);
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--light-purple);
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            color: #666;
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .tab.active {
+            color: var(--primary-purple);
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-purple);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .order-card {
+            background-color: var(--white);
+            border-radius: var(--card-radius);
+            box-shadow: var(--soft-shadow);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-purple);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed var(--light-purple);
+        }
+        
+        .order-id {
+            font-weight: 600;
+            color: var(--primary-purple);
+        }
+        
+        .order-date {
+            color: #888;
+            font-size: 14px;
+        }
+        
+        .order-status {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background-color: #fff3e0;
+            color: #ff9800;
+        }
+        
+        .status-completed {
+            background-color: #e8f5e9;
+            color: #4caf50;
+        }
+        
+        .status-cancelled {
+            background-color: #ffebee;
+            color: #f44336;
+        }
+        
+        .order-items {
+            margin-top: 10px;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .item-name {
+            font-weight: 500;
+        }
+        
+        .item-price {
+            color: var(--primary-purple);
+            font-weight: 600;
+        }
+        
+        .order-total {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--light-purple);
+            font-weight: 700;
+            color: var(--primary-purple);
+        }
+        
+        /* New Order Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--white);
+            border-radius: var(--card-radius);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--light-purple);
+        }
+        
+        .modal-title {
+            color: var(--primary-purple);
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #888;
+        }
+        
+        .dish-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .dish-option {
+            flex: 1;
+            min-width: 150px;
+            background-color: var(--lighter-purple);
+            border-radius: var(--card-radius);
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .dish-option:hover {
+            border-color: var(--primary-purple);
+        }
+        
+        .dish-option.selected {
+            background-color: var(--light-purple);
+            border-color: var(--primary-purple);
+        }
+        
+        .dish-option-name {
+            font-weight: 600;
+            color: var(--primary-purple);
+            margin-bottom: 5px;
+        }
+        
+        .dish-option-price {
+            color: var(--primary-purple);
+            font-weight: 500;
+        }
+        
+        .selected-items {
+            margin-top: 20px;
+        }
+        
+        .selected-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--light-purple);
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--light-purple);
+            color: var(--primary-purple);
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity {
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .remove-item {
+            color: #f44336;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .order-summary {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid var(--light-purple);
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .total-row {
+            font-weight: 700;
+            color: var(--primary-purple);
+            font-size: 18px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--light-purple);
+        }
+        
+        .submit-order {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-purple);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+        
+        .submit-order:hover {
+            background-color: #7a3fe6;
+            box-shadow: 0 4px 12px rgba(138, 79, 255, 0.3);
+        }
+        
+        /* Confirmation Modal */
+        .confirmation-modal {
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .confirmation-icon {
+            font-size: 60px;
+            color: #4caf50;
+            margin-bottom: 20px;
+        }
+        
+        .confirmation-message {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--primary-purple);
+        }
+        
+        .order-details {
+            background-color: var(--lighter-purple);
+            border-radius: var(--card-radius);
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .order-number {
+            font-weight: 700;
+            color: var(--primary-purple);
+            margin-bottom: 10px;
+        }
+        
+        /* Loading spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .action-buttons {
+                width: 100%;
+                flex-direction: column;
+            }
+            
+            .dish-option {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Customer Dashboard</h1>
+        </div>
+        <div class="user-info">
+            <div class="user-avatar">J</div>
+            <span>John Doe</span>
+        </div>
+    </header>
+
+    <main>
+        <h2 class="dashboard-title">
+            My Food Orders
+            <div class="action-buttons">
+                <button class="action-btn new-order-btn" id="newOrderBtn">
+                    <span>+</span> New Order
+                </button>
+            </div>
+        </h2>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="current">Current Orders</div>
+            <div class="tab" data-tab="past">Past Orders</div>
+        </div>
+        
+        <div class="tab-content active" id="current-orders">
+            <!-- Orders will be loaded here dynamically -->
+            <div class="order-card">
+                <p style="text-align: center; color: #888;">Loading orders...</p>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="past-orders">
+            <!-- Orders will be loaded here dynamically -->
+        </div>
+    </main>
+
+    <!-- New Order Modal -->
+    <div class="modal" id="newOrderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Create New Order</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            
+            <h4>Select Dishes</h4>
+            <div class="dish-selector">
+                <!-- Dishes will be loaded here dynamically -->
+            </div>
+            
+            <div class="selected-items" id="selectedItems">
+                <p style="text-align: center; color: #888;">No items selected yet</p>
+            </div>
+            
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery Fee:</span>
+                    <span>$3.99</span>
+                </div>
+                <div class="total-row">
+                    <span>Total:</span>
+                    <span id="orderTotal">$3.99</span>
+                </div>
+            </div>
+            
+            <button class="submit-order" id="submitOrder">Place Order</button>
+        </div>
+    </div>
+
+    <!-- Order Confirmation Modal -->
+    <div class="modal" id="confirmationModal">
+        <div class="modal-content confirmation-modal">
+            <div class="confirmation-icon">✓</div>
+            <h3 class="confirmation-message">Your order has been placed!</h3>
+            
+            <div class="order-details">
+                <div class="order-number">Order #</div>
+                <p>Estimated delivery: <strong>45 minutes</strong></p>
+                <p>You'll receive a notification when your order is on its way.</p>
+            </div>
+            
+            <button class="submit-order" id="closeConfirmation">Back to Dashboard</button>
+        </div>
+    </div>
+
+    <script>
+        // Tab functionality
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Show corresponding tab content
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(`${tabId}-orders`).classList.add('active');
+            });
+        });
+        
+        // New Order Modal
+        const newOrderBtn = document.getElementById('newOrderBtn');
+        const newOrderModal = document.getElementById('newOrderModal');
+        const closeModalBtn = document.querySelector('.close-modal');
+        const dishSelector = document.querySelector('.dish-selector');
+        let selectedItems = [];
+
+        newOrderBtn.addEventListener('click', async () => {
+            // Show loading state
+            dishSelector.innerHTML = '<p style="text-align: center; color: #888;">Loading dishes...</p>';
+            newOrderModal.style.display = 'flex';
+            
+            try {
+                // Fetch dishes from inventory service
+                const response = await fetch('http://localhost:8080/inventory-service/api/inventory/dishes');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch dishes');
+                }
+                const dishes = await response.json();
+                
+                // Clear loading message
+                dishSelector.innerHTML = '';
+                
+                // Populate dish options
+                dishes.forEach(dish => {
+                    const dishOption = document.createElement('div');
+                    dishOption.className = 'dish-option';
+                    dishOption.setAttribute('data-id', dish.id);
+                    dishOption.setAttribute('data-name', dish.name);
+                    dishOption.setAttribute('data-price', dish.price);
+                    
+                    dishOption.innerHTML = `
+                        <div class="dish-option-name">${dish.name}</div>
+                        <div class="dish-option-price">$${dish.price.toFixed(2)}</div>
+                    `;
+                    
+                    dishSelector.appendChild(dishOption);
+                });
+                
+                // Reattach event listeners to new dish options
+                attachDishOptionListeners();
+            } catch (error) {
+                console.error('Error loading dishes:', error);
+                dishSelector.innerHTML = '<p style="text-align: center; color: #f44336;">Failed to load dishes. Please try again.</p>';
+            }
+        });
+
+        function attachDishOptionListeners() {
+            const dishOptions = document.querySelectorAll('.dish-option');
+            
+            dishOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    option.classList.toggle('selected');
+                    
+                    const dishId = option.getAttribute('data-id');
+                    const dishName = option.getAttribute('data-name');
+                    const dishPrice = parseFloat(option.getAttribute('data-price'));
+                    
+                    if (option.classList.contains('selected')) {
+                        // Add to selected items
+                        selectedItems.push({
+                            id: dishId,
+                            name: dishName,
+                            price: dishPrice,
+                            quantity: 1
+                        });
+                    } else {
+                        // Remove from selected items
+                        selectedItems = selectedItems.filter(item => item.id !== dishId);
+                    }
+                    
+                    updateSelectedItemsDisplay();
+                    calculateTotal();
+                });
+            });
+        }
+        
+        function updateSelectedItemsDisplay() {
+            const selectedItemsContainer = document.getElementById('selectedItems');
+            
+            if (selectedItems.length === 0) {
+                selectedItemsContainer.innerHTML = '<p style="text-align: center; color: #888;">No items selected yet</p>';
+                return;
+            }
+            
+            selectedItemsContainer.innerHTML = '';
+            
+            selectedItems.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'selected-item';
+                itemElement.innerHTML = `
+                    <div>
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">$${item.price.toFixed(2)}</div>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn minus" data-id="${item.id}">-</button>
+                        <span class="quantity">${item.quantity}</span>
+                        <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                        <button class="remove-item" data-id="${item.id}">×</button>
+                    </div>
+                `;
+                
+                selectedItemsContainer.appendChild(itemElement);
+            });
+            
+            // Add event listeners to quantity buttons
+            document.querySelectorAll('.minus').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    const item = selectedItems.find(item => item.id === id);
+                    if (item.quantity > 1) {
+                        item.quantity--;
+                        updateSelectedItemsDisplay();
+                        calculateTotal();
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.plus').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    const item = selectedItems.find(item => item.id === id);
+                    item.quantity++;
+                    updateSelectedItemsDisplay();
+                    calculateTotal();
+                });
+            });
+            
+            document.querySelectorAll('.remove-item').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    selectedItems = selectedItems.filter(item => item.id !== id);
+                    
+                    // Also remove selected class from dish option
+                    document.querySelector(`.dish-option[data-id="${id}"]`).classList.remove('selected');
+                    
+                    updateSelectedItemsDisplay();
+                    calculateTotal();
+                });
+            });
+        }
+        
+        function calculateTotal() {
+            const subtotal = selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const deliveryFee = 3.99;
+            const total = subtotal + deliveryFee;
+            
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('orderTotal').textContent = `$${total.toFixed(2)}`;
+        }
+        
+        // Order submission
+        const submitOrderBtn = document.getElementById('submitOrder');
+        const confirmationModal = document.getElementById('confirmationModal');
+        const closeConfirmationBtn = document.getElementById('closeConfirmation');
+        
+        submitOrderBtn.addEventListener('click', async () => {
+            if (selectedItems.length === 0) {
+                alert('Please select at least one item');
+                return;
+            }
+
+            // Get user from localStorage
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user || !user.id) {
+                alert('User not found. Please login again.');
+                return;
+            }
+
+            // Show loading state
+            submitOrderBtn.disabled = true;
+            submitOrderBtn.innerHTML = `<span class="loading"></span> Processing...`;
+
+            // Prepare order items for backend
+            const orderItems = selectedItems.map(item => ({
+                dishId: item.id,
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity
+            }));
+
+            // Calculate subtotal
+            const subtotal = selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const deliveryFee = 3.99;
+            const total = subtotal + deliveryFee;
+            
+            // Create order payload
+            const orderData = {
+                customerId: user.id,
+                items: orderItems,
+                totalPrice: total,
+                status: "pending",
+                paymentConfirmed: false,
+                shippingCompanyId: null
+            };
+
+            try {
+                // Submit to backend
+                const response = await fetch(`http://localhost:8082/api/orders/createOrder/${user.id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const newOrder = await response.json();
+
+                // Show confirmation with actual order ID from backend
+                document.querySelector('.order-number').textContent = `Order #${newOrder.id}`;
+                newOrderModal.style.display = 'none';
+                confirmationModal.style.display = 'flex';
+                
+                // Reset the form
+                resetOrderForm();
+                
+                // Refresh orders list
+                setTimeout(() => {
+                    loadOrders(user.id);
+                }, 2000);
+            } catch (error) {
+                console.error('Error creating order:', error);
+                alert('Failed to place order. Please try again.');
+            } finally {
+                submitOrderBtn.disabled = false;
+                submitOrderBtn.textContent = 'Place Order';
+            }
+        });
+
+        function loadOrders(customerId) {
+            const currentOrdersContainer = document.getElementById('current-orders');
+            const pastOrdersContainer = document.getElementById('past-orders');
+
+            currentOrdersContainer.innerHTML = '<div class="order-card"><p style="text-align: center; color: #888;">Loading orders...</p></div>';
+            pastOrdersContainer.innerHTML = '';
+
+            fetch(`http://localhost:8082/api/orders/getAllOrdersByCustomerId/${customerId}`)
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    return res.json();
+                })
+                .then(async orders => {
+                    currentOrdersContainer.innerHTML = '';
+                    pastOrdersContainer.innerHTML = '';
+
+                    if (!orders || orders.length === 0) {
+                        const noOrdersMsg = `<div class="order-card">
+                            <p style="text-align: center; color: #888;">No orders found</p>
+                        </div>`;
+                        currentOrdersContainer.innerHTML = noOrdersMsg;
+                        return;
+                    }
+
+                    for (const order of orders) {
+                        try {
+                            const itemRes = await fetch(`http://localhost:8082/api/order-items/getItemsByOrderId/${order.id}`);
+                            const orderItems = itemRes.ok ? await itemRes.json() : [];
+
+                            const orderHTML = createOrderCard(order, orderItems);
+                            if (order.status.toLowerCase() === 'completed' || order.status.toLowerCase() === 'delivered') {
+                                pastOrdersContainer.innerHTML += orderHTML;
+                            } else {
+                                currentOrdersContainer.innerHTML += orderHTML;
+                            }
+                        } catch (itemErr) {
+                            console.error("Failed to fetch order items:", itemErr);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error("Error loading orders:", error);
+                    const errorMsg = `<div class="order-card">
+                        <p style="text-align: center; color: #f44336;">Error loading orders. Please refresh the page.</p>
+                    </div>`;
+                    currentOrdersContainer.innerHTML = errorMsg;
+                });
+        }
+
+        function createOrderCard(order, orderItems = []) {
+            // Format createdAt
+            let orderDate = 'Date not available';
+            if (order.createdAt) {
+                try {
+                    const dateObj = new Date(order.createdAt);
+                    if (!isNaN(dateObj)) {
+                        orderDate = dateObj.toLocaleString('en-US', {
+                            weekday: 'short',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    }
+                } catch (e) {
+                    console.error("Date formatting error:", e);
+                }
+            }
+
+            // Format totalPrice
+            let totalPrice = '0.00';
+            if (order.totalPrice !== undefined && order.totalPrice !== null) {
+                try {
+                    const price = parseFloat(order.totalPrice);
+                    if (!isNaN(price)) {
+                        totalPrice = price.toFixed(2);
+                    }
+                } catch (e) {
+                    console.error("Price formatting error:", e);
+                }
+            }
+
+            // Format status
+            const displayStatus = order.status || 'Processing';
+            const statusClass = getStatusClass(displayStatus);
+
+            // Render order items
+            const itemsHTML = orderItems.map(item => `
+                <div class="order-item">
+                    <span>${item.name} - ${item.quantity} × $${parseFloat(item.price).toFixed(2)}</span>
+                </div>`).join('');
+
+            return `
+                <div class="order-card">
+                    <div class="order-header">
+                        <div>
+                            <span class="order-id">Order #${order.id}</span>
+                            <span class="order-date"> - ${orderDate}</span>
+                        </div>
+                        <span class="order-status ${statusClass}">${displayStatus}</span>
+                    </div>
+                    <div class="order-items">
+                        ${itemsHTML || '<span style="color: #aaa;">No items found.</span>'}
+                    </div>
+                    <div class="order-total">
+                        Total: $${totalPrice}
+                    </div>
+                </div>`;
+        }
+
+        function getStatusClass(status) {
+            if (!status) return '';
+            
+            const statusLower = status.toLowerCase();
+            if (statusLower.includes('completed') || statusLower.includes('delivered')) {
+                return 'status-completed';
+            } else if (statusLower.includes('cancelled')) {
+                return 'status-cancelled';
+            } else {
+                return 'status-pending';
+            }
+        }
+
+        // Helper function to reset the order form
+        function resetOrderForm() {
+            selectedItems = [];
+            document.querySelectorAll('.dish-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            updateSelectedItemsDisplay();
+            calculateTotal();
+        }
+
+        // Close confirmation modal
+        closeConfirmationBtn.addEventListener('click', () => {
+            confirmationModal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === newOrderModal) {
+                newOrderModal.style.display = 'none';
+            }
+            if (e.target === confirmationModal) {
+                confirmationModal.style.display = 'none';
+            }
+        });
+
+        // Initialize the page by loading orders
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (user && user.id) {
+                loadOrders(user.id);
+            } else {
+                console.error("User not found in localStorage");
+                document.getElementById('current-orders').innerHTML = `
+                    <div class="order-card">
+                        <p style="text-align: center; color: #f44336;">Please login to view your orders</p>
+                    </div>`;
+            }
+        });
+    </script>
+</body>
+</html>
